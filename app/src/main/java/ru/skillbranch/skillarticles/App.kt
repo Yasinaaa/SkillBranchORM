@@ -3,19 +3,32 @@ package ru.skillbranch.skillarticles
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import com.facebook.stetho.Stetho
 import ru.skillbranch.skillarticles.data.local.PrefManager
 import ru.skillbranch.skillarticles.data.remote.NetworkMonitor
+import ru.skillbranch.skillarticles.di.components.ActivityComponent
+import ru.skillbranch.skillarticles.di.components.AppComponent
+import ru.skillbranch.skillarticles.di.components.DaggerAppComponent
+import ru.skillbranch.skillarticles.di.modules.ActivityModule
+import ru.skillbranch.skillarticles.di.modules.PreferencesModule
+import javax.inject.Inject
 
 class App : Application() {
 
     companion object{
+        lateinit var appComponent: AppComponent
+        lateinit var activityComponent: ActivityComponent
+
         private var instance : App? = null
 
         fun applicationContext() : Context{
             return  instance!!.applicationContext
         }
     }
+
+    @Inject
+    lateinit var monitor: NetworkMonitor
+    @Inject
+    lateinit var preferences: PrefManager
 
     init {
         instance = this
@@ -24,14 +37,18 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        NetworkMonitor.registerNetworkMonitor(applicationContext)
+        appComponent = DaggerAppComponent.factory()//.builder()
+            .create(applicationContext)
+//            .preferencesModule(PreferencesModule(applicationContext))
+//            .networkUtilsModule(NetworkMonitor(applicationContext))
+//            .build()
+        appComponent.inject(this)
+
+        monitor.registerNetworkMonitor()
 
         //set saved night/day mode
         val mode = if (PrefManager.isDarkMode) AppCompatDelegate.MODE_NIGHT_YES
         else AppCompatDelegate.MODE_NIGHT_NO
         AppCompatDelegate.setDefaultNightMode(mode)
-
-        Stetho.initializeWithDefaults(this)
-
     }
 }

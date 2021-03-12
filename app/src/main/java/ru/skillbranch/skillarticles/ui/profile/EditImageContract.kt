@@ -9,6 +9,10 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContract
 
+/**
+ * Created by Anna Shabaeva on 05.11.2020
+ */
+
 class EditImageContract : ActivityResultContract<Pair<Uri, Uri>, Uri?>() {
     override fun createIntent(context: Context, input: Pair<Uri, Uri>?): Intent {
         val intent = Intent(Intent.ACTION_EDIT).apply {

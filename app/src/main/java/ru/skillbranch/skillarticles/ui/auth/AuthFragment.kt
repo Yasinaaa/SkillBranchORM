@@ -20,7 +20,7 @@ class AuthFragment : BaseFragment<AuthViewModel>() {
 
     override fun setupViews() {
         tv_register.setOnClickListener {
-            //viewModel.navigate(NavigationCommand.To(R.id.page_registration))
+            viewModel.navigate(NavigationCommand.To(R.id.page_registration))
         }
 
         tv_privacy.setOnClickListener {

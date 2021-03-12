@@ -280,5 +280,9 @@ class ArticlesFragment : BaseFragment<ArticlesViewModel>() {
                 suggestionsAdapter.changeCursor(cursor)
             }
         }
+
+
+        //ToDO save UI
+
     }
 }

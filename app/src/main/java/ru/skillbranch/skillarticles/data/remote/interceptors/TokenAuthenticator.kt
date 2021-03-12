@@ -1,22 +1,22 @@
 package ru.skillbranch.skillarticles.data.remote.interceptors
 
+import dagger.Lazy
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 import ru.skillbranch.skillarticles.data.local.PrefManager
-import ru.skillbranch.skillarticles.data.remote.NetworkManager.api
+import ru.skillbranch.skillarticles.data.remote.RestService
 import ru.skillbranch.skillarticles.data.remote.req.RefreshReq
 
-class TokenAuthenticator : Authenticator {
-
-    private val prefManager = PrefManager
+//lazyApi инъектиться только при первом обращении
+class TokenAuthenticator(val prefManager: PrefManager, val lazyApi: Lazy<RestService>) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
 
         return if (response.code == 401) {
 
-            val res = api.refreshAccessToken(RefreshReq(prefManager.refreshToken)).execute()
+            val res = lazyApi.get().refreshAccessToken(RefreshReq(prefManager.refreshToken)).execute()
             return if (res.isSuccessful) {
 
                 val bearer = "Bearer ${res.body()!!.accessToken}"

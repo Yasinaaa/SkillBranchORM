@@ -1,13 +1,13 @@
 package ru.skillbranch.skillarticles.data.local
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.map
 import androidx.preference.PreferenceManager
-import ru.skillbranch.skillarticles.App
-import ru.skillbranch.skillarticles.data.JsonConverter
+import com.squareup.moshi.Moshi
 import ru.skillbranch.skillarticles.data.delegates.PrefDelegate
 import ru.skillbranch.skillarticles.data.delegates.PrefLiveDelegate
 import ru.skillbranch.skillarticles.data.delegates.PrefLiveObjDelegate
@@ -15,16 +15,16 @@ import ru.skillbranch.skillarticles.data.delegates.PrefObjDelegate
 import ru.skillbranch.skillarticles.data.models.AppSettings
 import ru.skillbranch.skillarticles.data.models.User
 
-object PrefManager {
+class PrefManager(context: Context, moshi: Moshi) {
     internal val preferences: SharedPreferences by lazy {
-        PreferenceManager.getDefaultSharedPreferences(App.applicationContext())
+        PreferenceManager.getDefaultSharedPreferences(context)
     }
 
     var isDarkMode by PrefDelegate(false)
     var isBigText by PrefDelegate(false)
     var accessToken by PrefDelegate("")
     var refreshToken by PrefDelegate("")
-    var profile: User? by PrefObjDelegate(JsonConverter.moshi.adapter(User::class.java))
+    var profile: User? by PrefObjDelegate(moshi.adapter(User::class.java))
 
     val isAuthLive: LiveData<Boolean> by lazy {
         val token by PrefLiveDelegate("accessToken", "", preferences)
@@ -32,7 +32,7 @@ object PrefManager {
     }
     val profileLive: LiveData<User?> by PrefLiveObjDelegate(
         "profile",
-        JsonConverter.moshi.adapter(User::class.java),
+        moshi.adapter(User::class.java),
         preferences
     )
 

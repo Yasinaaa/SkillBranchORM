@@ -10,6 +10,9 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_edit_profile_dialog.view.*
 import ru.skillbranch.skillarticles.R
 
+/**
+ * Created by Anna Shabaeva on 06.11.2020
+ */
 
 class EditProfileDialog : DialogFragment() {
     companion object {
