@@ -3,20 +3,22 @@ package ru.skillbranch.skillarticles
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import dagger.hilt.android.HiltAndroidApp
+//import dagger.android.AndroidInjector
+//import dagger.android.DaggerApplication
 import ru.skillbranch.skillarticles.data.local.PrefManager
 import ru.skillbranch.skillarticles.data.remote.NetworkMonitor
-import ru.skillbranch.skillarticles.di.components.ActivityComponent
-import ru.skillbranch.skillarticles.di.components.AppComponent
-import ru.skillbranch.skillarticles.di.components.DaggerAppComponent
-import ru.skillbranch.skillarticles.di.modules.ActivityModule
-import ru.skillbranch.skillarticles.di.modules.PreferencesModule
+//import ru.skillbranch.skillarticles.di.components.ActivityComponent
+//import ru.skillbranch.skillarticles.di.components.AppComponent
+//import ru.skillbranch.skillarticles.di.components.DaggerAppComponent
 import javax.inject.Inject
 
-class App : Application() {
+@HiltAndroidApp
+class App: Application(){ // { Dagger
 
     companion object{
-        lateinit var appComponent: AppComponent
-        lateinit var activityComponent: ActivityComponent
+//        lateinit var appComponent: AppComponent
+//        lateinit var activityComponent: ActivityComponent
 
         private var instance : App? = null
 
@@ -37,12 +39,12 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        appComponent = DaggerAppComponent.factory()//.builder()
-            .create(applicationContext)
-//            .preferencesModule(PreferencesModule(applicationContext))
-//            .networkUtilsModule(NetworkMonitor(applicationContext))
-//            .build()
-        appComponent.inject(this)
+//        appComponent = DaggerAppComponent.factory()//.builder()
+//            .create(applicationContext)
+////            .preferencesModule(PreferencesModule(applicationContext))
+////            .networkUtilsModule(NetworkMonitor(applicationContext))
+////            .build()
+//        appComponent.inject(this)
 
         monitor.registerNetworkMonitor()
 
@@ -51,4 +53,8 @@ class App : Application() {
         else AppCompatDelegate.MODE_NIGHT_NO
         AppCompatDelegate.setDefaultNightMode(mode)
     }
+
+//    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+//        return DaggerAppComponent.factory().create(this)
+//    }
 }

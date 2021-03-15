@@ -1,4 +1,4 @@
-package ru.skillbranch.skillarticles.di.scopes
+package ru.skillbranch.skillarticles.di.modules.dagger.scopes
 
 import javax.inject.Scope
 

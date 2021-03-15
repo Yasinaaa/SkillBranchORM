@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
+//import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_a.*
 import ru.skillbranch.skillarticles.App
 import ru.skillbranch.skillarticles.R
@@ -16,7 +18,8 @@ import javax.inject.Inject
 import javax.inject.Named
 
 
-class FragmentA : Fragment() {
+@AndroidEntryPoint
+class FragmentA : Fragment() { //Dagger
 
     @Inject
     @Named("dep1")
@@ -32,12 +35,14 @@ class FragmentA : Fragment() {
     @Inject
     lateinit var activity: TestActivity
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
+    val viewModel: ViewModelA by viewModels()
 
-    val viewModel: ViewModelA by viewModels{
-        factory
-    }
+//    @Inject
+//    lateinit var factory: TestViewModelFactory
+//
+//    val viewModel: ViewModelA by viewModels{
+//        factory.create(this, arguments)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +53,9 @@ class FragmentA : Fragment() {
 //            .build()
 //            .inject(this)
 
-        App.activityComponent
-            .plusFragmentAComponent() //FragmentAModule()
-            .inject(this)
+//        App.activityComponent
+//            .plusFragmentAComponent() //FragmentAModule()
+//            .inject(this)
     }
 
     override fun onCreateView(
