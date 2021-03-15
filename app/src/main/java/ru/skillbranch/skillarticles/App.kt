@@ -3,20 +3,18 @@ package ru.skillbranch.skillarticles
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import dagger.hilt.android.HiltAndroidApp
 import ru.skillbranch.skillarticles.data.local.PrefManager
 import ru.skillbranch.skillarticles.data.remote.NetworkMonitor
-import ru.skillbranch.skillarticles.di.components.ActivityComponent
-import ru.skillbranch.skillarticles.di.components.AppComponent
-import ru.skillbranch.skillarticles.di.components.DaggerAppComponent
-import ru.skillbranch.skillarticles.di.modules.ActivityModule
-import ru.skillbranch.skillarticles.di.modules.PreferencesModule
+//import ru.skillbranch.skillarticles.di.components.DaggerAppComponent
 import javax.inject.Inject
 
+@HiltAndroidApp
 class App : Application() {
 
     companion object{
-        lateinit var appComponent: AppComponent
-        lateinit var activityComponent: ActivityComponent
+//        lateinit var appComponent: AppComponent
+//        lateinit var activityComponent: ActivityComponent
 
         private var instance : App? = null
 
@@ -37,18 +35,18 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        appComponent = DaggerAppComponent.factory()//.builder()
-            .create(applicationContext)
+//        appComponent = DaggerAppComponent.factory()//.builder()
+//            .create(applicationContext)
 //            .preferencesModule(PreferencesModule(applicationContext))
 //            .networkUtilsModule(NetworkMonitor(applicationContext))
 //            .build()
-        appComponent.inject(this)
+//        appComponent.inject(this)
 
         monitor.registerNetworkMonitor()
 
         //set saved night/day mode
-        val mode = if (PrefManager.isDarkMode) AppCompatDelegate.MODE_NIGHT_YES
-        else AppCompatDelegate.MODE_NIGHT_NO
-        AppCompatDelegate.setDefaultNightMode(mode)
+//        val mode = if (PrefManager.isDarkMode) AppCompatDelegate.MODE_NIGHT_YES
+//        else AppCompatDelegate.MODE_NIGHT_NO
+//        AppCompatDelegate.setDefaultNightMode(mode)
     }
 }

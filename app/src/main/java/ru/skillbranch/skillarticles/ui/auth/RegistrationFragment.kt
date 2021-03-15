@@ -29,17 +29,6 @@ class RegistrationFragment() : BaseFragment<AuthViewModel>() {
     private val args: RegistrationFragmentArgs by navArgs()
     override val layout: Int = R.layout.fragment_registration
 
-    //testing constructor
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    constructor(
-        mockRoot: RootActivity,
-        mockFactory: ((SavedStateRegistryOwner) -> ViewModelProvider.Factory)? = null
-    ) : this() {
-        _mockRoot = mockRoot
-        _mockFactory = mockFactory
-    }
-
-
     override fun setupViews() {
 
         btn_register.setOnClickListener {

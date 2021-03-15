@@ -1,14 +1,20 @@
 package ru.skillbranch.skillarticles.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.repositories.RootRepository
 import ru.skillbranch.skillarticles.viewmodels.base.BaseViewModel
 import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.NavigationCommand
+import javax.inject.Inject
 
-class RootViewModel(handle: SavedStateHandle) : BaseViewModel<RootState>(handle, RootState()) {
-    private val repository: RootRepository = RootRepository
+@HiltViewModel
+class RootViewModel @Inject constructor(
+    handle: SavedStateHandle,
+    repository: RootRepository
+) : BaseViewModel<RootState>(handle, RootState()) {
+
     private val privateRoutes = listOf(R.id.nav_profile)
 
     init {

@@ -5,20 +5,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.paging.DataSource
 import androidx.paging.ItemKeyedDataSource
-import ru.skillbranch.skillarticles.data.local.DbManager.db
+import androidx.sqlite.db.SimpleSQLiteQuery
 import ru.skillbranch.skillarticles.data.local.PrefManager
-import ru.skillbranch.skillarticles.data.local.dao.ArticleContentsDao
-import ru.skillbranch.skillarticles.data.local.dao.ArticleCountsDao
-import ru.skillbranch.skillarticles.data.local.dao.ArticlePersonalInfosDao
-import ru.skillbranch.skillarticles.data.local.dao.ArticlesDao
+import ru.skillbranch.skillarticles.data.local.dao.*
 import ru.skillbranch.skillarticles.data.local.entities.ArticleFull
+import ru.skillbranch.skillarticles.data.local.entities.ArticleItem
+import ru.skillbranch.skillarticles.data.local.entities.CategoryData
 import ru.skillbranch.skillarticles.data.models.AppSettings
 import ru.skillbranch.skillarticles.data.remote.RestService
 import ru.skillbranch.skillarticles.data.remote.err.NoNetworkError
 import ru.skillbranch.skillarticles.data.remote.req.MessageReq
 import ru.skillbranch.skillarticles.data.remote.res.CommentRes
+import ru.skillbranch.skillarticles.extensions.data.toArticleContent
+import javax.inject.Inject
 
-interface IArticleRepository {
+interface IArticleRepository: IRepository {
     fun findArticle(articleId: String): LiveData<ArticleFull>
     fun getAppSettings(): LiveData<AppSettings>
     fun isAuth(): LiveData<Boolean>
@@ -42,26 +43,14 @@ interface IArticleRepository {
     fun findArticleCommentCount(articleId: String): LiveData<Int>
 }
 
-object ArticleRepository : IArticleRepository {
-    private val network = NetworkManager.api
-    private val preferences = PrefManager
-    private var articlesDao = db.articlesDao()
-    private var articlePersonalDao = db.articlePersonalInfosDao()
-    private var articleCountsDao = db.articleCountsDao()
-    private var articleContentDao = db.articleContentsDao()
-
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    fun setupTestDao(
-        articlesDao: ArticlesDao,
-        articlePersonalDao: ArticlePersonalInfosDao,
-        articleCountsDao: ArticleCountsDao,
-        articleContentDao: ArticleContentsDao
-    ) {
-        this.articlesDao = articlesDao
-        this.articlePersonalDao = articlePersonalDao
-        this.articleCountsDao = articleCountsDao
-        this.articleContentDao = articleContentDao
-    }
+class ArticleRepository @Inject constructor(
+    private val network: RestService,
+    private val preferences: PrefManager,
+    private var articlesDao: ArticlesDao,
+    private var articleContentDao: ArticleContentsDao,
+    private var articleCountsDao: ArticleCountsDao,
+    private var articlePersonalDao: ArticlePersonalInfosDao
+) : IArticleRepository {
 
     override fun findArticle(articleId: String): LiveData<ArticleFull> {
         return articlesDao.findFullArticle(articleId)

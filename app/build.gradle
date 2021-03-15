@@ -5,6 +5,7 @@ plugins{
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
     id "scabbard.gradle" version "0.4.0"
+    id 'dagger.hilt.android.plugin'
 }
 apply from: "../versions.gradle"
 
@@ -107,6 +108,9 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
+    implementation 'com.google.dagger:hilt-android:2.33-beta'
+    kapt 'com.google.dagger:hilt-compiler:2.33-beta'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:$okhttp_version"
     androidTestImplementation 'org.mockito:mockito-core:2.28.2'
@@ -121,4 +125,8 @@ dependencies {
     androidTestImplementation 'com.jraska.livedata:testing-ktx:1.1.2'
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
     debugImplementation 'androidx.fragment:fragment-testing:1.2.5'
+}
+
+kapt {
+    correctErrorTypes true
 }

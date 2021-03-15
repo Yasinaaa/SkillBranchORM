@@ -9,14 +9,6 @@ import ru.skillbranch.skillarticles.BuildConfig
 import ru.skillbranch.skillarticles.data.local.dao.*
 import ru.skillbranch.skillarticles.data.local.entities.*
 
-object DbManager {
-    val db = Room.databaseBuilder(
-        App.applicationContext(),
-        AppDb::class.java,
-        AppDb.DATABASE_NAME
-    ).build()
-}
-
 @Database(
     entities = [Article::class,
         ArticleCounts::class,

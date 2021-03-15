@@ -4,14 +4,17 @@ import android.content.Context
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import ru.skillbranch.skillarticles.data.local.PrefManager
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
-object PreferencesModule {
+class PreferencesModule {
 
-    @Singleton
     @Provides
-    fun providePrefManager(context: Context, moshi: Moshi) : PrefManager =
+    fun providePrefManager(@ApplicationContext context: Context, moshi: Moshi) : PrefManager =
         PrefManager(context, moshi)
 }

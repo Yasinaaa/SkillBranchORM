@@ -11,15 +11,12 @@ import ru.skillbranch.skillarticles.ui.base.BaseActivity.ToolbarBuilder
 import ru.skillbranch.skillarticles.viewmodels.base.BaseViewModel
 import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.Loading
+import javax.inject.Inject
 
 abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment() {
 
-    //mock root for testing
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    var _mockRoot: RootActivity? = null
-
-    val root: RootActivity
-        get() = _mockRoot ?: activity as RootActivity
+    @Inject
+    lateinit var root: RootActivity
 
     open val binding: Binding? = null
 
