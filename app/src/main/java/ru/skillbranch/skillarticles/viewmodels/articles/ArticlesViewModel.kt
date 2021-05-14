@@ -35,6 +35,7 @@ class ArticlesViewModel @Inject constructor(
             .setInitialLoadSizeHint(50)
             .build()
     }
+
     private val listData = Transformations.switchMap(state) {
         val filter = it.toArticleFilter()
         return@switchMap buildPagedList(repository.rawQueryArticles(filter))
